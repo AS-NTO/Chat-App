@@ -1,4 +1,4 @@
-package ChatServerApp.Server;
+package chatserver.Server;
 
 import java.io.*;
 import java.net.*;
@@ -25,15 +25,20 @@ public class ChatServer {
 
     // database connection
     private static void saveMessageToDatabase(String sender, String message) {
-        String url = "jdbc:sqlite:path/to/your/database.db"; // Change to your DB path
-        String sql = "INSERT INTO messages (sender, message) VALUES (?, ?)";
-
-        try (Connection conn = DriverManager.getConnection(url);
-                PreparedStatement pstmt = conn.prepareStatement(sql)) {
+      
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            String url = "jdbc:mysql://localhost:3306/chatapp";
+            String sql = "INSERT INTO chat_messages (sender, message) VALUES (?, ?)";
+            String username = "root";
+            String password = "S9843529908";
+            Connection connection = DriverManager.getConnection(url, username, password);
+            PreparedStatement pstmt = connection.prepareStatement(sql) ;
             pstmt.setString(1, sender);
             pstmt.setString(2, message);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
+            System.out.println("Connected to the database!");
+        } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
     }
@@ -61,7 +66,7 @@ public class ChatServer {
                     System.out.println("Received: " + message);
                     broadcast(message);
                     // save data in the database
-                    // saveMessageToDatabase("Client", message);
+                    saveMessageToDatabase("Client", message);
                 }
             } catch (IOException e) {
                 e.printStackTrace();

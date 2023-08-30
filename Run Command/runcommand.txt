@@ -1,0 +1,4 @@
+Compile java file from the child(inside ChatApp/Chat-app/chatserver/server) directory as follow;
+->javac -cp .:/usr/share/java/mysql-connector-j-8.1.0.jar ChatServer.java
+Run java file from the parent(inside ChatApp/chat-app) directory as follow;
+->java -cp .:/usr/share/java/mysql-connector-j-8.1.0.jar chatserver.Server.ChatServer
